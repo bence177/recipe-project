@@ -25,7 +25,7 @@ const appRoutes: Routes = [
     },
     { path: 'shopping-list', component: ShoppingListComponent },
     { path: 'auth', component: AuthComponent }
-    //{path:'**', redirectTo: '/not-found'}
+    // {path:'**', redirectTo: '/not-found'}
 ]
 
 @NgModule({
@@ -34,5 +34,4 @@ const appRoutes: Routes = [
 })
 
 export class AppRoutingModule {
-
 }

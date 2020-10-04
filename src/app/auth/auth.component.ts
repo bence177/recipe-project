@@ -58,7 +58,7 @@ export class AuthComponent implements OnDestroy {
                 this.showErrorAlert(errorMessage);
                 this.isLoading = false;
             }
-        )
+        );
         form.resetForm();
     }
 
