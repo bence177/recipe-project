@@ -4,16 +4,18 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
+import { environment } from './../../environments/environment';
 import { User } from './user.model';
 
+
 export interface AuthResponseData {
-    kind: string,
-    idToken: string,
-    email: string,
-    refreshToken: string,
-    expiresIn: string,
-    localID: string,
-    registered?: boolean
+    kind: string;
+    idToken: string;
+    email: string;
+    refreshToken: string;
+    expiresIn: string;
+    localID: string;
+    registered?: boolean;
 }
 
 @Injectable({
@@ -26,7 +28,8 @@ export class AuthService {
     constructor(private http: HttpClient, private router: Router) { }
 
     signUp(email: string, password: string) {
-        return this.http.post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAVmyDJ3QRofzssNDbjyt-eQgAK8sTXLiw',
+        return this.http.post<AuthResponseData>(
+            'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + environment.firebaseAPIKey,
             {
                 email,
                 password,
@@ -44,7 +47,8 @@ export class AuthService {
     }
 
     logIn(email: string, password: string) {
-        return this.http.post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAVmyDJ3QRofzssNDbjyt-eQgAK8sTXLiw',
+        return this.http.post<AuthResponseData>(
+            'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' + environment.firebaseAPIKey,
             {
                 email,
                 password,
