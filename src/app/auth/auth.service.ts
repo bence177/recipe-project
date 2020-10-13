@@ -4,16 +4,18 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
+import { environment } from './../../environments/environment';
 import { User } from './user.model';
 
+
 export interface AuthResponseData {
-    kind: string,
-    idToken: string,
-    email: string,
-    refreshToken: string,
-    expiresIn: string,
-    localID: string,
-    registered?: boolean
+    kind: string;
+    idToken: string;
+    email: string;
+    refreshToken: string;
+    expiresIn: string;
+    localID: string;
+    registered?: boolean;
 }
 
 @Injectable({
@@ -26,10 +28,11 @@ export class AuthService {
     constructor(private http: HttpClient, private router: Router) { }
 
     signUp(email: string, password: string) {
-        return this.http.post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAVmyDJ3QRofzssNDbjyt-eQgAK8sTXLiw',
+        return this.http.post<AuthResponseData>(
+            'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + environment.firebaseAPIKey,
             {
-                email: email,
-                password: password,
+                email,
+                password,
                 returnSecureToken: true
             }
         ).pipe(catchError(this.handleError), tap(resData => {
@@ -38,16 +41,17 @@ export class AuthService {
                 resData.localID,
                 resData.idToken,
                 +resData.expiresIn
-            )
+            );
         })
         );
     }
 
     logIn(email: string, password: string) {
-        return this.http.post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAVmyDJ3QRofzssNDbjyt-eQgAK8sTXLiw',
+        return this.http.post<AuthResponseData>(
+            'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' + environment.firebaseAPIKey,
             {
-                email: email,
-                password: password,
+                email,
+                password,
                 returnSecureToken: true
             }
         ).pipe(catchError(this.handleError), tap(resData => {
@@ -56,7 +60,7 @@ export class AuthService {
                 resData.localID,
                 resData.idToken,
                 +resData.expiresIn
-            )
+            );
         })
         );
     }
@@ -97,7 +101,7 @@ export class AuthService {
     autoLogout(expDuration: number) {
         this.tokenExpTimer = setTimeout(() => {
             this.logout();
-        }, expDuration)
+        }, expDuration);
     }
 
     private handleAuth(email: string, userID: string, token: string, expiresIn: number) {
@@ -126,10 +130,10 @@ export class AuthService {
                 errorMessage = 'The email you entered is unregistered!';
                 break;
             case 'INVALID_PASSWORD':
-                errorMessage = "The password you entered is invalid!";
+                errorMessage = 'The password you entered is invalid!';
                 break;
             case 'USER_DISABLED':
-                errorMessage = "The account with the given credentials had been suspended! Please contact the administrator!";
+                errorMessage = 'The account with the given credentials had been suspended! Please contact the administrator!';
                 break;
         }
         return throwError(errorMessage);
