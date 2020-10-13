@@ -15,12 +15,8 @@ import { ShoppingListComponent } from './shopping-list.component';
         SharedModule,
         FormsModule,
         ReactiveFormsModule,
-        RouterModule.forChild([ { path: 'shopping-list', component: ShoppingListComponent } ])
+        RouterModule.forChild([ { path: '', component: ShoppingListComponent } ])
     ],
-    exports: [
-        ShoppingListComponent,
-        ShoppingEditComponent,
-        RouterModule
-    ]
+    // providers: [ LoggingService ]
 })
 export class ShoppingListModule { }

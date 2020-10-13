@@ -28,8 +28,8 @@ export class AuthService {
     signUp(email: string, password: string) {
         return this.http.post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAVmyDJ3QRofzssNDbjyt-eQgAK8sTXLiw',
             {
-                email: email,
-                password: password,
+                email,
+                password,
                 returnSecureToken: true
             }
         ).pipe(catchError(this.handleError), tap(resData => {
@@ -38,7 +38,7 @@ export class AuthService {
                 resData.localID,
                 resData.idToken,
                 +resData.expiresIn
-            )
+            );
         })
         );
     }
@@ -46,8 +46,8 @@ export class AuthService {
     logIn(email: string, password: string) {
         return this.http.post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAVmyDJ3QRofzssNDbjyt-eQgAK8sTXLiw',
             {
-                email: email,
-                password: password,
+                email,
+                password,
                 returnSecureToken: true
             }
         ).pipe(catchError(this.handleError), tap(resData => {
@@ -56,7 +56,7 @@ export class AuthService {
                 resData.localID,
                 resData.idToken,
                 +resData.expiresIn
-            )
+            );
         })
         );
     }
@@ -97,7 +97,7 @@ export class AuthService {
     autoLogout(expDuration: number) {
         this.tokenExpTimer = setTimeout(() => {
             this.logout();
-        }, expDuration)
+        }, expDuration);
     }
 
     private handleAuth(email: string, userID: string, token: string, expiresIn: number) {
@@ -126,10 +126,10 @@ export class AuthService {
                 errorMessage = 'The email you entered is unregistered!';
                 break;
             case 'INVALID_PASSWORD':
-                errorMessage = "The password you entered is invalid!";
+                errorMessage = 'The password you entered is invalid!';
                 break;
             case 'USER_DISABLED':
-                errorMessage = "The account with the given credentials had been suspended! Please contact the administrator!";
+                errorMessage = 'The account with the given credentials had been suspended! Please contact the administrator!';
                 break;
         }
         return throwError(errorMessage);
